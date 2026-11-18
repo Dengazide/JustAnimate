@@ -1,0 +1,19 @@
+{
+  "name":"justanimate","version":"1.0.0","private":true,
+  "description":"Original Three.js, Remotion and Blender animated-short pipeline",
+  "scripts":{
+    "dev":"remotion studio src/index.ts",
+    "render:beer-flood":"remotion render src/index.ts BeerFloodShort out/beer-flood.mp4 --codec h264 --crf 17",
+    "typecheck":"tsc --noEmit",
+    "build:assets":"blender -b -t 8 --python blender/build_asset_library.py",
+    "build:assets:fallback":"python scripts/build_asset_fallback.py",
+    "audio":"python scripts/make_audio.py --out-dir public/audio --script story/beer-flood/script.md",
+    "qa":"python scripts/qa_video.py out/beer-flood.mp4 --out-dir out/qa --shots story/beer-flood/shots.json"
+  },
+  "dependencies":{
+    "@remotion/cli":"^4.0.0","@remotion/renderer":"^4.0.0","@remotion/three":"^4.0.0",
+    "@react-three/fiber":"^8.17.10","react":"^18.3.1","react-dom":"^18.3.1",
+    "remotion":"^4.0.0","three":"^0.180.0"
+  },
+  "devDependencies":{"@types/react":"^18.3.12","@types/three":"^0.180.0","typescript":"^5.7.2"}
+}
