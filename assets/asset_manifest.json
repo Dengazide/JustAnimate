@@ -1,0 +1,8 @@
+{
+ "schema_version":1,"generator":"blender/build_asset_library.py","output":"public/assets/generated/justanimate-library.glb","units":"metres","license":"Original project assets; see LICENSE",
+ "assets":[
+  {"name":"ASSET_Barrel","category":"prop"},{"name":"ASSET_Vat","category":"prop"},{"name":"ASSET_Crate","category":"prop"},{"name":"ASSET_Lantern","category":"prop"},
+  {"name":"ASSET_GeorgianTownhouse","category":"environment"},{"name":"ASSET_HandCart","category":"prop"},{"name":"ASSET_CobblestoneTile","category":"environment"},{"name":"ASSET_StreetTree","category":"environment"},
+  {"name":"ASSET_Character_Brewer_LightSkin","category":"character","status":"starter-mesh-not-rigged"},{"name":"ASSET_Character_Woman_LightSkin","category":"character","status":"starter-mesh-not-rigged"},{"name":"ASSET_Character_Watchman_LightSkin","category":"character","status":"starter-mesh-not-rigged"}
+ ]
+}
