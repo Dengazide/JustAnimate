@@ -25,7 +25,7 @@ function character(role:'brewer'|'woman'|'watchman'){
  // back arm first, then torso, then front arm
  stroke([[207,397],[159,493],[145,589]],ink,20);stroke([[207,397],[159,493],[145,589]],coat,11);
  // bean torso, narrower shoulders and round lower edge
- const torso=[[208,375],[237,353],[280,348],[323,355],[365,381],[377,470],[366,588],[334,641],[266,650],[211,625],[190,567],[190,459]];
+ const torso:[number,number][]=[[208,375],[237,353],[280,348],[323,355],[365,381],[377,470],[366,588],[334,641],[266,650],[211,625],[190,567],[190,459]];
  path(torso,coat);
  // torso gradient, broad shadow on far side
  g.save();g.beginPath();torso.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.clip();
@@ -38,7 +38,7 @@ function character(role:'brewer'|'woman'|'watchman'){
  g.beginPath();g.arc(430,557,12,0,Math.PI*2);g.fillStyle=ink;g.fill();
  g.beginPath();g.arc(145,589,12,0,Math.PI*2);g.fillStyle=ink;g.fill();
  // head: wider-than-tall hand-drawn bean, slightly asymmetric with tapered chin.
- const head=[[166,230],[166,166],[194,112],[245,82],[307,78],[361,101],[407,145],[424,201],[413,259],[386,307],[343,337],[287,350],[233,337],[190,306],[166,270]];
+ const head:[number,number][]=[[166,230],[166,166],[194,112],[245,82],[307,78],[361,101],[407,145],[424,201],[413,259],[386,307],[343,337],[287,350],[233,337],[190,306],[166,270]];
  g.beginPath();head.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();
  const hg=g.createRadialGradient(280,160,10,280,205,190);hg.addColorStop(0,skin);hg.addColorStop(.78,skin);hg.addColorStop(1,skinShade);g.fillStyle=hg;g.fill();
  g.strokeStyle=ink;g.lineWidth=11;g.lineJoin='round';g.stroke();
