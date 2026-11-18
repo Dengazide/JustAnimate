@@ -1,0 +1,17 @@
+{
+ "fps":30,"durationFrames":900,"width":1080,"height":1920,
+ "shots":[
+  {"id":"establish","start":0,"end":120,"description":"Georgian London rooftops and narrow St Giles street"},
+  {"id":"brewery","start":120,"end":255,"description":"Horse Shoe Brewery, giant wooden vat and workers"},
+  {"id":"failure","start":255,"end":405,"description":"Iron hoop slips, vat bursts and barrels tumble"},
+  {"id":"flood","start":405,"end":630,"description":"Dark porter surges through the lane"},
+  {"id":"aftermath","start":630,"end":780,"description":"Quiet aftermath, wet cobbles and damaged facades"},
+  {"id":"today","start":780,"end":900,"description":"Present-day location reveal"}
+ ],
+ "plannedEffects":[
+  {"frame":258,"effect":"hoop slip and tiny splinters"},
+  {"frame":300,"effect":"vat rupture, debris and short camera impact"},
+  {"frame":414,"effect":"beer wave enters street"},
+  {"frame":620,"effect":"wave settles"}
+ ]
+}
