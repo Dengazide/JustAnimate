@@ -8,26 +8,66 @@ import {cameraAt,FPS,smooth01} from './story/beerFlood';
 const wood=new THREE.MeshStandardMaterial({color:'#81563d',roughness:.88});
 const iron=new THREE.MeshStandardMaterial({color:'#29333a',metalness:.78,roughness:.33});
 const beer=new THREE.MeshPhysicalMaterial({color:'#5a2d16',roughness:.24,clearcoat:.25});
+// Skill-conformant 2D hand-drawn character cards: 600x1000 design space,
+// ~3.5 head-heights, bean torso, fine stick limbs, asymmetrical bean head,
+// plum weighted ink, clean pale faces, lidded deadpan eyes; never emoji-like.
 function character(role:'brewer'|'woman'|'watchman'){
- const c=document.createElement('canvas');c.width=512;c.height=800;const g=c.getContext('2d')!;
- const skin=role==='woman'?'#efc9a7':'#f0c6a2',hair=role==='woman'?'#79412c':role==='watchman'?'#77716a':'#4b3027',coat=role==='woman'?'#496c55':role==='watchman'?'#344e69':'#78513b',ink='#241b22';
- g.lineWidth=13;g.lineJoin='round';g.lineCap='round';g.fillStyle='#302f38';g.strokeStyle=ink;
- g.beginPath();g.moveTo(204,585);g.lineTo(184,735);g.lineTo(244,735);g.lineTo(262,590);g.closePath();g.fill();g.stroke();
- g.beginPath();g.moveTo(285,585);g.lineTo(292,735);g.lineTo(350,735);g.lineTo(342,580);g.closePath();g.fill();g.stroke();
- g.fillStyle='#47352f';g.beginPath();g.roundRect(164,710,100,52,18);g.fill();g.stroke();g.beginPath();g.roundRect(282,710,95,52,18);g.fill();g.stroke();
- g.fillStyle=coat;g.beginPath();g.moveTo(160,330);g.quadraticCurveTo(256,295,355,332);g.lineTo(391,590);g.quadraticCurveTo(260,628,128,590);g.closePath();g.fill();g.stroke();
- g.fillStyle='#f0e4cf';g.beginPath();g.moveTo(219,320);g.lineTo(256,403);g.lineTo(294,320);g.closePath();g.fill();g.stroke();
- g.strokeStyle=ink;g.lineWidth=52;g.beginPath();g.moveTo(155,370);g.quadraticCurveTo(108,465,135,530);g.stroke();g.beginPath();g.moveTo(360,370);g.quadraticCurveTo(414,450,375,515);g.stroke();
- g.strokeStyle=skin;g.lineWidth=31;g.beginPath();g.moveTo(155,370);g.quadraticCurveTo(108,465,135,530);g.stroke();g.beginPath();g.moveTo(360,370);g.quadraticCurveTo(414,450,375,515);g.stroke();
- g.fillStyle=skin;g.strokeStyle=ink;g.lineWidth=12;g.beginPath();g.ellipse(256,213,118,142,0,0,Math.PI*2);g.fill();g.stroke();
- g.fillStyle=hair;g.beginPath();g.moveTo(137,206);g.quadraticCurveTo(129,63,254,49);g.quadraticCurveTo(375,56,376,206);g.quadraticCurveTo(318,150,260,161);g.quadraticCurveTo(192,145,137,206);g.closePath();g.fill();g.stroke();
- g.strokeStyle=ink;g.lineWidth=10;g.beginPath();g.moveTo(190,206);g.lineTo(224,199);g.moveTo(288,199);g.lineTo(322,206);g.stroke();
- g.fillStyle='#fff7ec';for(const x of [208,306]){g.beginPath();g.ellipse(x,235,15,19,0,0,Math.PI*2);g.fill();g.stroke();}
- g.fillStyle='#2c2929';for(const x of [211,309]){g.beginPath();g.arc(x,237,7,0,Math.PI*2);g.fill();}
- if(role==='watchman'){g.fillStyle='#272c36';g.beginPath();g.roundRect(157,5,198,66,13);g.fill();g.stroke();}
- if(role==='brewer'){g.fillStyle='#d7c2a1';g.beginPath();g.moveTo(194,385);g.lineTo(318,385);g.lineTo(344,580);g.lineTo(172,580);g.closePath();g.fill();g.stroke();}
- const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;
- const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false}));s.scale.set(2,3.15,1);return s;
+ const c=document.createElement('canvas');c.width=600;c.height=1000;const g=c.getContext('2d')!;
+ const ink='#241726',skin='#ffe2c2',skinShade='#f5c2a3';
+ const coat=role==='woman'?'#7b5ac9':role==='watchman'?'#3a4e73':'#357650';
+ const pants=role==='woman'?'#3b3f52':'#3d4440',hair=role==='woman'?'#70432f':role==='watchman'?'#51443b':'#4a3024';
+ const stroke=(pts:[number,number][],colour:string,width:number)=>{g.beginPath();pts.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.strokeStyle=colour;g.lineWidth=width;g.lineCap='round';g.lineJoin='round';g.stroke();};
+ const path=(pts:[number,number][],fill:string,outline=true)=>{g.beginPath();pts.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.fillStyle=fill;g.fill();if(outline){g.strokeStyle=ink;g.lineWidth=11;g.lineJoin='round';g.stroke();}};
+ // legs: single narrow strokes; feet are short ink strokes, not oversized boots.
+ stroke([[255,646],[246,790],[229,944]],ink,19);stroke([[345,646],[357,790],[377,944]],ink,19);
+ stroke([[255,650],[246,790],[229,944]],pants,11);stroke([[345,650],[357,790],[377,944]],pants,11);
+ stroke([[229,944],[192,951]],ink,21);stroke([[377,944],[414,951]],ink,21);
+ // back arm first, then torso, then front arm
+ stroke([[207,397],[159,493],[145,589]],ink,20);stroke([[207,397],[159,493],[145,589]],coat,11);
+ // bean torso, narrower shoulders and round lower edge
+ const torso=[[208,375],[237,353],[280,348],[323,355],[365,381],[377,470],[366,588],[334,641],[266,650],[211,625],[190,567],[190,459]];
+ path(torso,coat);
+ // torso gradient, broad shadow on far side
+ g.save();g.beginPath();torso.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.clip();
+ const tg=g.createLinearGradient(190,0,390,0);tg.addColorStop(0,'rgba(20,20,42,.38)');tg.addColorStop(.42,'rgba(20,20,42,.08)');tg.addColorStop(1,'rgba(255,220,175,.06)');g.fillStyle=tg;g.fillRect(180,340,220,330);g.restore();
+ // period clothing detail
+ path([[267,365],[300,365],[317,430],[284,452],[251,430]],'#f1efe6');
+ for(const y of [472,515,558]){g.beginPath();g.arc(281,y,7,0,Math.PI*2);g.fillStyle=role==='watchman'?'#e8c45a':'#d9dde0';g.fill();}
+ // front arm and ink-dot hand
+ stroke([[365,401],[407,482],[430,557]],ink,20);stroke([[365,401],[407,482],[430,557]],coat,11);
+ g.beginPath();g.arc(430,557,12,0,Math.PI*2);g.fillStyle=ink;g.fill();
+ g.beginPath();g.arc(145,589,12,0,Math.PI*2);g.fillStyle=ink;g.fill();
+ // head: wider-than-tall hand-drawn bean, slightly asymmetric with tapered chin.
+ const head=[[166,230],[166,166],[194,112],[245,82],[307,78],[361,101],[407,145],[424,201],[413,259],[386,307],[343,337],[287,350],[233,337],[190,306],[166,270]];
+ g.beginPath();head.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();
+ const hg=g.createRadialGradient(280,160,10,280,205,190);hg.addColorStop(0,skin);hg.addColorStop(.78,skin);hg.addColorStop(1,skinShade);g.fillStyle=hg;g.fill();
+ g.strokeStyle=ink;g.lineWidth=11;g.lineJoin='round';g.stroke();
+ // heavier lower/shadow-side ink contour
+ stroke([[410,235],[397,282],[365,319],[322,341],[278,348]],ink,17);
+ // hair wraps the crown and rear of the skull
+ path([[165,221],[161,156],[190,103],[243,67],[309,64],[365,91],[407,140],[411,190],[379,161],[343,139],[297,131],[249,143],[206,173]],hair);
+ // deadpan lidded eyes: close-set, no white highlights, no blush
+ stroke([[238,218],[258,215]],ink,10);stroke([[300,215],[320,218]],ink,10);
+ g.fillStyle=ink;g.beginPath();g.ellipse(249,229,10,13,0,0,Math.PI*2);g.ellipse(311,229,10,13,0,0,Math.PI*2);g.fill();
+ // small asymmetric brows
+ stroke([[230,190],[252,184]],ink,7);stroke([[302,185],[324,192]],ink,7);
+ // small dry smirk
+ stroke([[270,278],[286,281],[299,276]],'#5a1e28',7);
+ // role-specific headwear / costume silhouette
+ if(role==='brewer'){
+  path([[157,139],[180,83],[236,55],[337,57],[392,91],[409,145],[378,126],[337,109],[248,110],[193,139]],'#d4c3a3');
+  path([[194,375],[300,375],[330,625],[184,625]],'#d4c3a3');
+ } else if(role==='watchman'){
+  path([[157,130],[178,83],[234,55],[333,57],[394,91],[409,139],[157,139]],'#303641');
+  path([[145,125],[421,125],[413,151],[153,151]],'#252a34');
+ } else {
+  path([[161,173],[170,110],[218,61],[310,54],[385,96],[423,180],[396,164],[365,125],[307,111],[245,124],[199,158]],hair);
+  // bonnet rim and tied ribbon
+  stroke([[169,164],[214,142],[276,137],[344,150],[397,181]],'#e5d7c4',18);
+ }
+ const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;
+ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false}));
+ s.scale.set(1.8,3,1);return s;
 }
 const Building:React.FC<{pos:[number,number,number];w:number;h:number;colour:string}>=({pos,w,h,colour})=><group position={pos}>
  <mesh position={[0,h/2,0]} castShadow><boxGeometry args={[w,h,5]}/><meshStandardMaterial color={colour}/></mesh>
