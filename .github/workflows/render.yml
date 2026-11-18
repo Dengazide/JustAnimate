@@ -11,6 +11,7 @@ on:
       - 'assets/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'tsconfig.json'
       - 'requirements.txt'
       - '.github/workflows/render.yml'
 permissions:
