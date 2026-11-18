@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
+out/*
+!out/README.md
+public/audio/*.wav
+public/assets/generated/*.glb
+assets/generated/*.blend
