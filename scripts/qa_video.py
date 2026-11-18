@@ -37,4 +37,5 @@ def main():
   e=run(['ffmpeg','-hide_banner','-i',a.video,'-map','0:a:0','-af','ebur128=peak=true','-f','null','-'],False).stderr.decode(errors='replace');tail=e[e.rfind('Summary:'):];loud=' | '.join(x.strip() for x in tail.splitlines() if x.strip().startswith(('I:','LRA:','Peak:')))
  lines=['# QA report',f'Duration: {dur:.3f}s',f'Video: {v["width"]}x{v["height"]} @ {v["r_frame_rate"]}',f'Audio: {aud[0].get("sample_rate")} Hz' if aud else 'Audio missing',f'Loudness: {loud}','## Checks']+[f"- [{'x' if ok else ' '}] {k}" for k,ok in checks.items()]+[f'Black frames: {black[:30]}',f'White frames: {white[:30]}',f'Frozen spans: {frozen[:30]}']
  (out/'report.md').write_text('\n'.join(lines)+'\n');print('\n'.join(lines))
+ if not all(checks.values()): raise SystemExit('Video QA failed; see '+str(out/'report.md'))
 if __name__=='__main__':main()
